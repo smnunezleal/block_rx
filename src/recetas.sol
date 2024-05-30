@@ -7,7 +7,6 @@ contract ContratoDeRecetas {
         string medicamento;
         string estado;
         address doctor;
-        string hashDIDPaciente;
         uint256 fechaCreacionDID;
         bool dispensada;
     }
