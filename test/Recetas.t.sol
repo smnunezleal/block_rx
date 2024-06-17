@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract ContratoDeRecetas {
+contract Recetas {
     struct Medicamento {
         string codigo;
         uint cantidad;
@@ -62,8 +62,5 @@ contract ContratoDeRecetas {
         emit RecetaDispensada(_hash, _farmacia);
     }
 
-    function verificarReceta(string memory _hash) public view returns (Receta memory) {
-        require(keccak256(abi.encodePacked(recetas[_hash].estado)) == keccak256(abi.encodePacked("emitida")), "Receta no válida o ya dispensada.");
-        return recetas[_hash];
-    }
+    
 }
