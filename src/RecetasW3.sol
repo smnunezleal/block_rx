@@ -9,7 +9,7 @@ contract RecetasW3 {
 
     struct Receta {
         string hash;
-        string estado;
+        bool dispensada;
         string DIDfarmacia;
         Medicamento[] medicamentos;
     }
@@ -27,7 +27,7 @@ contract RecetasW3 {
         
         Receta storage receta = recetas[_hash];
         receta.hash = _hash;
-        receta.estado = "emitida";
+        receta.dispensada = false;
         receta.DIDfarmacia = "";
 
         for (uint i = 0; i < _medicamentos.length; i++) {
@@ -41,16 +41,18 @@ contract RecetasW3 {
     }
 
     function dispensarMedicamento(string memory _hash, string memory _DIDfarmacia) public {
-        Receta storage receta = recetas[_hash];
-        require(keccak256(bytes(receta.estado)) == keccak256(bytes("emitida")), unicode"Receta no válida o ya dispensada.");
+        require(bytes(recetas[_hash].hash).length != 0, unicode"La receta no existe.");
+        require(!recetas[_hash].dispensada, unicode"La receta ya fue dispensada.");
         
-        receta.DIDfarmacia = _DIDfarmacia;
-        receta.estado = "dispensada";
+        recetas[_hash].DIDfarmacia = _DIDfarmacia;
+        recetas[_hash].dispensada = true;
 
         emit RecetaDispensada(_hash, _DIDfarmacia);
     }
 
+
     function verificarReceta(string memory _hash) public view returns (Receta memory) {
-        return recetas[_hash];
+        Receta memory receta = recetas[_hash];
+        return receta;
     }
 }
